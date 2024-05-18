@@ -1,0 +1,35 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Apr 29 19:37:41 2024
+@author: YFAlcantara
+"""
+import numpy as np
+from sklearn.linear_model import BayesianRidge
+import matplotlib.pyplot as plt
+# Set random seed for reproducibility
+np.random.seed(789)
+# Generate sample data
+X = np.linspace(-2, 2, 100)
+y = 3 * X**2 + np.random.normal(0, 1, 100)
+# Create and fit the Bayesian regression model
+model = BayesianRidge()
+model.fit(X.reshape(-1, 1), y)
+# Generate predictions
+X_test = np.linspace(-3, 3, 200)
+y_pred, y_std = model.predict(X_test.reshape(-1, 1), return_std=True)
+# Plot the results
+plt.figure(figsize=(10, 6)) # Set figure size
+# Plot actual data points
+plt.scatter(X, y, label='Actual', color='blue')
+# Plot predicted values
+plt.plot(X_test, y_pred, color='red', label="Predicted")
+# Fill uncertainty area
+plt.fill_between(X_test, y_pred - y_std, y_pred + y_std, color="gray", alpha=0.3,
+label='Uncertainty')
+# Add legend, labels, and title
+plt.legend()
+plt.xlabel('X')
+plt.ylabel('y')
+plt.title("Bayesian Model Regression")
+# Show the plot
+plt.show()
