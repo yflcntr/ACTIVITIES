@@ -1,0 +1,28 @@
+import numpy as np
+import scipy.stats as stats
+import matplotlib.pyplot as plt
+# Define the observed data
+num_heads = 6
+num_flips = 10
+# Define the prior distribution (uniform distribution)
+prior = stats.uniform(loc=0, scale=1)
+# Define the likelihood function (binomial distribution)
+def likelihood(theta):
+return stats.binom.pmf(num_heads, num_flips, theta)
+# Define the range of theta values
+thetas = np.linspace(0, 1, 1000)
+# Calculate the unnormalized posterior
+unnormalized_posterior = likelihood(thetas) * prior.pdf(thetas)
+# Normalize the posterior
+posterior = unnormalized_posterior / np.trapz(unnormalized_posterior, thetas)
+# Plot the prior, likelihood, and posterior distributions
+plt.figure(figsize=(10, 6))
+plt.plot(thetas, prior.pdf(thetas), label='Prior', color='blue')
+plt.plot(thetas, likelihood(thetas), label='Likelihood', color='green')
+plt.plot(thetas, posterior, label='Posterior', color='red')
+plt.xlabel('θ (Probability of Heads)')
+plt.ylabel('Density')
+plt.title('Bayesian Inference with Uniform Prior')
+plt.legend()
+plt.grid(True)
+plt.show()
